@@ -1,19 +1,28 @@
 // Eduardo Mejia
+//TODO: Write a program in Go that uses the SSL labs API to check the TLS security of a given domain. Everything is open, so you are free to implement this as you want.
+
 package main
 
 import (
-	"fmt"      // format for printing and scan the URL
-	"io"       // read returned info from api
-	"net/http" // this is to make the API call
-	"os"       // for the exit code to use as a break
+	"fmt" // format for printing and scan the URL
+	//"io"       // To read the returned info
+	//"net/http" // this is to make the API call
+	//"os"
 )
 
-//import "os"
+// API URLs
+const apiUrl = "https://api.ssllabs.com/api/v4/"
+const analyzeUrl = "analyze?host="
 
-func TLSSecurityCheck(url string) {
-	fmt.Println("URL:", url)
+func TLSSecurityCheck(url string, email string) {
+	fmt.Println("URL to analyze:", url)
+	fmt.Println("E-mail used:", email)
 
-	resp, err := http.Get(url)
+	//startNew starts an assesment, all=done only returns info when assesment is done
+	var startUrl = "" + apiUrl + analyzeUrl + url + "&startNew=on&all=done"
+	fmt.Println(startUrl)
+
+	/*resp, err := http.Get(startUrl)
 	if err != nil { // This is to make sure there are no errors in getting stuff from the API, nil is the go version of null btw
 		fmt.Println(err.Error()) //If there is an error, this will print it
 		os.Exit(1)               //A number means there was an error, 0 is success
@@ -24,15 +33,21 @@ func TLSSecurityCheck(url string) {
 		os.Exit(1)
 	}
 	fmt.Println(string(respData)) //needs string to be readable, otherwise its just numbers
+	*/
 }
 
 func main() {
-	var url string
+	var url string // saving url to check
 	fmt.Println("Please write the URL to check their TLS Security")
 	fmt.Scan(&url) // This is how you save inputs from the console to a variable
+
+	var email string // saving email registered in API
+	fmt.Println("Please write a registered e-mail in the API")
+	fmt.Scan(&email)
+
 	if url == "a" {
-		url = "http://pokeapi.co/api/v2/pokedex/kanto/" // This whole if section is just a placeholder url to test if the API call works
+		url = "https://pokeapi.co/api/v2/pokemon/ditto" // This whole if section is just a placeholder url to test if the API call works
 	}
 
-	TLSSecurityCheck(url)
+	TLSSecurityCheck(url, email)
 }
